@@ -48,4 +48,8 @@ def annotationNukeX():
 
 	os.system('open "' + fpath + '"')
 
-
+	annotools = """
+	osascript -e 'tell application "System Events" to keystroke "a" using {command down, shift down}' 
+	"""
+	os.system(annotools)
+	
