@@ -28,7 +28,7 @@ def annotationNukeX():
 	fullfiilename = filename + "." + fileEnd
 
 	pPath = filePath.split('online')[0]
-	dPath = pPath + "online/_project_files/_dailies/_notes/" + str(tdate)
+	dPath = pPath + "online/_ops/_dailies/_notes/" + str(tdate)
 
 	dircmd = 'mkdir -p "' + dPath + '"'
 	os.system(dircmd)
