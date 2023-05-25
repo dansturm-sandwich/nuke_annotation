@@ -1,16 +1,45 @@
-# capture nuke viewer for screenshot tool
+import os
+import os.path
+from datetime import date
+date = date.today().strftime('%y%m%d')
 
-nuke.activeViewer().node().capture("C:/temp/file5.jpg")
+frame = f'{(int(nuke.frame())):04}'
 
-from PySide2 import QtCore
-from PySide2.QtCore import *
+fileEnd = str(frame) + ".jpg"
 
-fpth = "/Users/dansturm/Desktop/capture.jpg"
+viewer = nuke.activeViewer()
+viewerNode = viewer.node()
+activeBuffer = viewer.activeInput()
+inputNode = viewerNode.input(activeBuffer)
 
-timg = Image.open("/Users/dansturm/Desktop/capture.jpg")
+topNode = nuke.toNode(nuke.tcl('full_name [topnode {0}]'.format(inputNode.name())))
+filePath = topNode['file'].getValue()
+fwi = topNode.width()
+fhi =  topNode.height()
 
-PySide6.QtGui.QImage.load(/Users/dansturm/Desktop/capture.jpg[, format=None])
 
-simg = timg.scaledToHeight(1800, mode=Qt.SmoothTransformation)
-cimg = simg.copy(ssx, 0, swid, shig)  
-cimg.save(fpth, "PNG")
+filename = filePath.split('/')[-1]
+filename = filename.split('.')[0]
+fullfiilename = filename + "." + fileEnd
+
+pPath = filePath.split('online')[0]
+dPath = pPath + "online/_project_files/_dailies/_notes/" + str(date)
+
+
+dircmd = 'mkdir -p "' + dPath + '"'
+os.system(dircmd)
+
+
+fpath = dPath + "/" + fullfiilename
+
+nuke.activeViewer().node().capture(fpath)
+
+
+os.system( 'sips -s profile /Library/ColorSync/Profiles/Displays/StudioDisplay-7B124C67-2DD2-8F2D-1452-F1C958A0C9F4.icc "' + fpath + '"')
+
+os.system( 'sips --resampleHeight "' + str(fhi) + '" "' + fpath + '"')
+
+os.system( 'sips --cropToHeightWidth "' + str(fhi) + '" "' + str(fwi) + '" "' + fpath + '"')
+
+
+os.system('open "' + fpath + '"')
