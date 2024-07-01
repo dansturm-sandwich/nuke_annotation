@@ -2,9 +2,12 @@ import nuke
 import os
 import os.path
 from datetime import date
+import time
 import subprocess
 
 def annotationNukeX():
+	timestamp = int(time.time())
+	timestamp = str(timestamp)
 	tdate = date.today().strftime('%y%m%d')
 
 	frame = f'{(int(nuke.frame())):04}'
@@ -25,7 +28,7 @@ def annotationNukeX():
 
 	filename = filePath.split('/')[-1]
 	filename = filename.split('.')[0]
-	fullfiilename = filename + "." + fileEnd
+	fullfiilename = filename + "_" + timestamp + "." + fileEnd
 
 	pPath = filePath.split('online')[0]
 	dPath = pPath + "online/_ops/_dailies/_notes/" + str(tdate)
